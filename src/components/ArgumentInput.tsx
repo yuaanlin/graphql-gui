@@ -64,13 +64,7 @@ function ArgumentInput(props: ArgumentInputProps) {
             type="file"
             onChange={e => {
               const file = e.target.files?.[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => {
-                  props.onChange(reader.result);
-                };
-              }
+              props.onChange(file);
             }} />
         </div>;
       }
@@ -104,8 +98,8 @@ function ArgumentInput(props: ArgumentInputProps) {
       </div>;
     case GraphQLEnumType:
       type = type as GraphQLEnumType;
-      return <select>
-        {type.getValues().map((value, i) => <option key={i}>
+      return <select onChange={e => props.onChange(e.target.value)}>
+        {type.getValues().map((value, i) => <option key={i} value={value.value}>
           {value.name}
         </option>)}
       </select>;
